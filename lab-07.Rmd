@@ -161,14 +161,21 @@ the estimated rating for a female is 4.1, and it increases by 0.14 if the profes
 
 ```{r fit-score_bty_gender_fit}
 # fit model
+score_bty_gender_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(score ~ bty_avg + gender, data = evals)
 
 # tidy model output
+tidy(score_bty_gender_fit)
 ```
 
 *Add your narrative here.*
 
 ```{r eval = FALSE}
-ggplot(___) + ...
+ggplot(data = evals,
+       mapping = aes(x = score, y = bty_avg,
+                     colour = gender)) + 
+  geom_jitter()
 ```
 
 2. What percent of the variability in `score` is explained by the model `score_bty_gender_fit`. 
