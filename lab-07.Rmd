@@ -53,42 +53,42 @@ The relationship between bty_avg and score appears to be a very weak one, but do
 
 1. Fit a linear model called `score_bty_fit` to predict average professor evaluation `score` from average beauty rating (`bty_avg`). Print the regression output using `tidy()`.
 
-```{r fit-score_bty_fit, eval = FALSE}
-# remove eval = FALSE from the code chunk options after filling in the blanks
+```{r fit-score_bty_fit}
 score_bty_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(___ ~ ___, data = ___)
+  fit(score ~ bty_avg, data = evals)
 ```
 
-```{r tidy-score_bty_fit, eval = FALSE}
-# remove eval = FALSE from the code chunk options after filling in the blanks
-tidy(___)
+```{r tidy-score_bty_fit}
+tidy(score_bty_fit)
 ```
 
-*Add your linear model here. Don't worry too much about notation, you can use things like score-hat.*
+score-hat = 3.88 + 0.0666 x bty_avg
 
 2. Plot the data again using `geom_jitter()`, and add the regression line.
 
 ```{r viz-score_bty_fit,eval=FALSE}
-# add your plot here. Hint, you can add the regression line using geom_smooth()
+ggplot(data = evals,
+       mapping = aes(x = score, y = bty_avg)) +
+  geom_jitter() +
+  geom_smooth(method = lm, se = FALSE)
 ```
 
 3. Interpret the slope of the linear model in context of the data.
 
-*Add your interpretation here*
+For each additional point a professor is scored, their beauty rating is expected to increase by 0.0666.
 
 4. Interpret the intercept of the linear model in context of the data. Comment on whether or not the intercept makes sense in this context.
 
-*Add your interpretation here*
+The intercept represents the beauty rating of a professor who's overall score is 0. This means a professor with a 0 rating would have a beauty rating of 3.88. I do not think this make sense as if you were to mark a professor that low it would be more to do with the teaching. Mathematically however, this makes sense.
 
 5. Determine the $R^2$ of the model and interpret it in the context of the data.
 
-```{r R2, eval = FALSE}
-# remove eval = FALSE from the code chunk options after filling in the blanks
-glance(___)$___
+```{r R2}
+glance(score_bty_fit)$r.squared
 ```
 
-*Add your interpretation here*
+This is quite a low R^2 value, meaning the models predictions are not very accurate. This means the correlation between beauty rating and score is weak, so the model is not very suitable.
 
 6. Make a plot of residuals vs. predicted values for the model above.
 
@@ -96,23 +96,32 @@ glance(___)$___
 # remove eval = FALSE from the code chunk options after filling in the blanks
 score_bty_aug <- augment(score_bty_fit$fit)
 
-ggplot(___) + ...
+ggplot(score_bty_aug,
+       mapping = aes(x = .fitted, y = .resid)) + 
+  geom_jitter(alpha = 0.5) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed")
 ```
+There does not seem to be much of a pattern, but there is more dense residuals above the line than below it, so this is somewhat appropriate for modelling the relationship.
 
 # Exercise 3: Simple Linear regression with a categorical predictor
 
 0. Look at the variable rank, and determine the frequency of each category level.
 
 ```{r}
-# ... 
+ evals %>%
+  count(rank)
 ```
 
 1. Fit a new linear model called `score_rank_fit` to predict average professor evaluation `score` based on `rank` of the professor.
 
 ```{r fit-score_rank_fit}
 # fit model
+score_rank_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(score ~ rank, data = evals)
 
 # tidy model output
+tidy(score_rank_fit)
 ```
 
 *Add your narrative here.*
