@@ -24,18 +24,30 @@ evals<-read.csv("data/evals.csv", row.names=1)
 1.  Visualize the distribution of `score` in the dataframe `evals`.
 
 ```{r viz-score}
-# add code here
+ggplot(data = evals,
+       mapping = aes(x = score)) +
+  geom_histogram()
+
+evals %>%
+  summarise(avg_score = mean(score),
+            med_score = median(score))
 ```
 
-*Add your other details and narratives here.*
+the distribution is skewed to the right, so the students rate their courses highly. The mean score was 4.2 and the median score was 4.3. I expected the students to enjoy the class so this makes sense to me.
 
 2.  Visualize and describe the relationship between `score` and `bty_avg` using `geom_point()` to represent the data. 
 
 ```{r scatterplot}
-# add code here
+ggplot(data = evals,
+       mapping = aes(x = score, y = bty_avg)) +
+  geom_point()
+
+ggplot(data = evals,
+       mapping = aes(x = score, y = bty_avg)) +
+  geom_jitter()
 ```
 
-*Add your narrative and other details here.*
+The relationship between bty_avg and score appears to be a very weak one, but does appear to be positive. The jitter revealed more points on the graph that were initially hidden, and showed the correlation was stronger than it previously appeared.
 
 # Exercise 2: Simple Linear regression with a numerical predictor
 
